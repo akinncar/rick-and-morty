@@ -1,7 +1,12 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, ActivityIndicator, Image, Dimensions } from 'react-native';
 import { gql, useQuery } from '@apollo/client';
 import { FlatList } from 'react-native-gesture-handler';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
 
 const GET_CHARACTERS = gql`
   query GetCharacters($page: Int!) {
@@ -19,17 +24,32 @@ const GET_CHARACTERS = gql`
 `;
 
 function HomeItem({ item }: any) {
+  const offset = useSharedValue(0);
+
+  const animatedStyles = useAnimatedStyle(() => {
+    return {
+      opacity: withTiming(offset.value, { duration: 5000 }),
+    };
+  });
+
+  useEffect(() => {
+    offset.value = 100;
+  }, []);
+
   return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: 'center',
-        flexDirection: 'row',
-        backgroundColor: '#222',
-        borderRadius: 8,
-        margin: 12,
-        padding: 16,
-      }}
+    <Animated.View
+      style={[
+        {
+          flex: 1,
+          alignItems: 'center',
+          flexDirection: 'row',
+          backgroundColor: '#222',
+          borderRadius: 8,
+          margin: 12,
+          padding: 16,
+        },
+        animatedStyles,
+      ]}
     >
       <Image
         source={{ uri: item.image }}
@@ -48,7 +68,7 @@ function HomeItem({ item }: any) {
       >
         {item.name}
       </Text>
-    </View>
+    </Animated.View>
   );
 }
 
