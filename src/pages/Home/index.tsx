@@ -7,13 +7,16 @@ import {
   Image,
   Dimensions,
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { gql, useQuery } from '@apollo/client';
-import { FlatList } from 'react-native-gesture-handler';
+import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
+import { SharedElement } from 'react-navigation-shared-element';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 const GET_CHARACTERS = gql`
   query GetCharacters($page: Int!) {
@@ -31,6 +34,7 @@ const GET_CHARACTERS = gql`
 `;
 
 function HomeItem({ item }: any) {
+  const navigation = useNavigation<StackNavigationProp<any>>();
   const offset = useSharedValue(0);
 
   const animatedStyles = useAnimatedStyle(() => {
@@ -44,38 +48,42 @@ function HomeItem({ item }: any) {
   }, []);
 
   return (
-    <Animated.View
-      style={[
-        {
-          flex: 1,
-          alignItems: 'center',
-          flexDirection: 'row',
-          backgroundColor: '#222',
-          borderRadius: 8,
-          margin: 12,
-          padding: 16,
-        },
-        animatedStyles,
-      ]}
-    >
-      <Image
-        source={{ uri: item.image }}
-        style={{
-          height: 42,
-          width: 42,
-          borderRadius: 42,
-          marginRight: 12,
-        }}
-      />
-      <Text
-        style={{
-          color: '#fff',
-          fontSize: 18,
-        }}
+    <TouchableOpacity onPress={() => navigation.push('Detail', { item })}>
+      <Animated.View
+        style={[
+          {
+            flex: 1,
+            alignItems: 'center',
+            flexDirection: 'row',
+            backgroundColor: '#222',
+            borderRadius: 8,
+            margin: 12,
+            padding: 16,
+          },
+          animatedStyles,
+        ]}
       >
-        {item.name}
-      </Text>
-    </Animated.View>
+        <SharedElement id={`item.${item.id}.photo`}>
+          <Image
+            source={{ uri: item.image }}
+            style={{
+              height: 42,
+              width: 42,
+              borderRadius: 42,
+              marginRight: 12,
+            }}
+          />
+        </SharedElement>
+        <Text
+          style={{
+            color: '#fff',
+            fontSize: 18,
+          }}
+        >
+          {item.name}
+        </Text>
+      </Animated.View>
+    </TouchableOpacity>
   );
 }
 
