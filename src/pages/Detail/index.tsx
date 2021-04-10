@@ -1,34 +1,17 @@
 import React from 'react';
-import { View, Dimensions, Image, Text } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { SharedElement } from 'react-navigation-shared-element';
+import { Container, Avatar, Title } from './styles';
 
 const DetailScreen = (props: any) => {
   const { item } = props.route.params;
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#111' }}>
+    <Container>
       <SharedElement id={`item.${item.id}.photo`}>
-        <Image
-          style={{
-            width: Dimensions.get('screen').width,
-            resizeMode: 'contain',
-            height: Dimensions.get('screen').width,
-          }}
-          source={{ uri: item.image }}
-        />
-        <Text
-          style={{
-            color: '#fff',
-            fontWeight: '500',
-            fontSize: 24,
-            margin: 16,
-          }}
-        >
-          {item.name}
-        </Text>
+        <Avatar resizeMode="contain" source={{ uri: item.image }} />
+        <Title>{item.name}</Title>
       </SharedElement>
-    </View>
+    </Container>
   );
 };
 

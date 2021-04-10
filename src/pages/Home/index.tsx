@@ -9,6 +9,7 @@ import {
 import { gql, useQuery } from '@apollo/client';
 import { FlatList } from 'react-native-gesture-handler';
 import HomeItem from '../../components/HomeItem';
+import { Container, Header, Logo } from './styles';
 
 const GET_CHARACTERS = gql`
   query GetCharacters($page: Int!) {
@@ -30,35 +31,17 @@ export default function Home() {
     variables: { page: 1 },
   });
 
-  if (loading) return <ActivityIndicator />;
+  if (loading) return <ActivityIndicator color="#fff" />;
 
   return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#111',
-      }}
-    >
+    <Container>
       <SafeAreaView>
-        <View
-          style={{
-            display: 'flex',
-            width: Dimensions.get('window').width,
-            alignItems: 'center',
-          }}
-        >
-          <Image
-            style={{
-              display: 'flex',
-              width: Dimensions.get('window').width * 0.7,
-              height: 120,
-              resizeMode: 'contain',
-            }}
+        <Header>
+          <Logo
             source={require('../../assets/images/logo.png')}
+            resizeMode="contain"
           />
-        </View>
+        </Header>
         <FlatList
           style={{
             width: Dimensions.get('window').width,
@@ -68,6 +51,6 @@ export default function Home() {
           renderItem={({ item }: any) => <HomeItem item={item} />}
         />
       </SafeAreaView>
-    </View>
+    </Container>
   );
 }
