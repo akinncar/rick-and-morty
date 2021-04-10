@@ -1,10 +1,9 @@
 import React from 'react';
 import {
-  View,
   SafeAreaView,
   ActivityIndicator,
-  Image,
   Dimensions,
+  ScrollView,
 } from 'react-native';
 import { gql, useQuery } from '@apollo/client';
 import { FlatList } from 'react-native-gesture-handler';
@@ -27,7 +26,7 @@ const GET_CHARACTERS = gql`
 `;
 
 export default function Home() {
-  const { loading, error, data } = useQuery(GET_CHARACTERS, {
+  const { loading, data } = useQuery(GET_CHARACTERS, {
     variables: { page: 1 },
   });
 
@@ -36,20 +35,18 @@ export default function Home() {
   return (
     <Container>
       <SafeAreaView>
-        <Header>
-          <Logo
-            source={require('../../assets/images/logo.png')}
-            resizeMode="contain"
-          />
-        </Header>
-        <FlatList
-          style={{
-            width: Dimensions.get('window').width,
-          }}
-          keyExtractor={(item) => item.id}
-          data={data.characters.results}
-          renderItem={({ item }: any) => <HomeItem item={item} />}
-        />
+        <ScrollView>
+          <Header>
+            <Logo
+              source={require('../../assets/images/logo.png')}
+              resizeMode="contain"
+            />
+          </Header>
+          {data.characters.results.map((character: any) => {
+            console.log(character.id);
+            return <HomeItem character={character} />;
+          })}
+        </ScrollView>
       </SafeAreaView>
     </Container>
   );

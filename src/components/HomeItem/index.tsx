@@ -1,15 +1,16 @@
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useEffect } from 'react';
-import { Image, Text, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
 import { SharedElement } from 'react-navigation-shared-element';
+import { Content, Avatar, Title } from './styles';
 
-function HomeItem({ item }: any) {
+function HomeItem({ character }: any) {
   const navigation = useNavigation<StackNavigationProp<any>>();
   const offset = useSharedValue(0);
 
@@ -24,40 +25,14 @@ function HomeItem({ item }: any) {
   }, []);
 
   return (
-    <TouchableOpacity onPress={() => navigation.push('Detail', { item })}>
-      <Animated.View
-        style={[
-          {
-            flex: 1,
-            alignItems: 'center',
-            flexDirection: 'row',
-            backgroundColor: '#222',
-            borderRadius: 8,
-            margin: 12,
-            padding: 16,
-          },
-          animatedStyles,
-        ]}
-      >
-        <SharedElement id={`item.${item.id}.photo`}>
-          <Image
-            source={{ uri: item.image }}
-            style={{
-              height: 42,
-              width: 42,
-              borderRadius: 42,
-              marginRight: 12,
-            }}
-          />
-        </SharedElement>
-        <Text
-          style={{
-            color: '#fff',
-            fontSize: 18,
-          }}
-        >
-          {item.name}
-        </Text>
+    <TouchableOpacity onPress={() => navigation.push('Detail', { character })}>
+      <Animated.View style={animatedStyles}>
+        <Content>
+          <SharedElement id={`item.${character.id}.photo`}>
+            <Avatar source={{ uri: character.image }} />
+          </SharedElement>
+          <Title>{character.name}</Title>
+        </Content>
       </Animated.View>
     </TouchableOpacity>
   );

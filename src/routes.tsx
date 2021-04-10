@@ -15,8 +15,8 @@ function Routes() {
           name="Detail"
           component={Detail}
           sharedElementsConfig={(route, otherRoute, showing) => {
-            const { item } = route.params;
-            return [`item.${item.id}.photo`];
+            const { character } = route.params;
+            return [`item.${character.id}.photo`];
           }}
         />
       </Stack.Navigator>

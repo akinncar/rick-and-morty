@@ -3,14 +3,14 @@ import { SharedElement } from 'react-navigation-shared-element';
 import { Container, Avatar, Title } from './styles';
 
 const DetailScreen = (props: any) => {
-  const { item } = props.route.params;
+  const { character } = props.route.params;
 
   return (
     <Container>
-      <SharedElement id={`item.${item.id}.photo`}>
-        <Avatar resizeMode="contain" source={{ uri: item.image }} />
-        <Title>{item.name}</Title>
+      <SharedElement id={`item.${character.id}.photo`}>
+        <Avatar resizeMode="contain" source={{ uri: character.image }} />
       </SharedElement>
+      <Title>{character.name}</Title>
     </Container>
   );
 };
